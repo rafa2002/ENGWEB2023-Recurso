@@ -1,1 +1,73 @@
+Exercicio 1 ----
+
+- 1.1 -
+
+    Adicionei a cada registo um identificador _id
+
+
+- 1.2 -
+
+1. db.consultas.count()
+    5000
+
+2. db.consultas.count({ idade: { $gt: 80 } });
+    1126
+
+3. db.consultas.aggregate([
+  { $group: { _id: "$sexo", total_consultas: { $sum: 1 } } }
+]);
+    [
+    { _id: 'Feminino', total_consultas: 1652 },
+    { _id: 'Outro', total_consultas: 1706 },
+    { _id: 'Masculino', total_consultas: 1642 }
+    ]
+
+
+4. db.consultas.aggregate([
+  { $unwind: "$operacoes" },
+  { $group: { _id: "$operacoes.nome", total_intervencoes: { $sum: 1 } } }
+]);
+    [
+    { _id: 'Depilação a cera', total_intervencoes: 1303 },        
+    { _id: 'Peeling químico', total_intervencoes: 1245 },
+    { _id: 'Microdermoabrasão', total_intervencoes: 1195 },       
+    { _id: 'Tratamento de manchas na pele', total_intervencoes: 1271 },
+    { _id: 'Maquilhagem profissional', total_intervencoes: 1218 },
+    { _id: 'Tratamento de acne', total_intervencoes: 1276 },      
+    { _id: 'Tratamento de gordura localizada', total_intervencoes:
+    1228 },
+    { _id: 'Manicure e pedicure', total_intervencoes: 1245 },     
+    { _id: 'Toxina botulínica (Botox)', total_intervencoes: 1229 },
+    { _id: 'Lifting facial', total_intervencoes: 1196 },
+    { _id: 'Tratamento de rugas', total_intervencoes: 1227 },     
+    { _id: 'Tratamento de estrias', total_intervencoes: 1202 },   
+    { _id: 'Depilação a laser', total_intervencoes: 1224 },       
+    { _id: 'Limpeza de pele', total_intervencoes: 1308 },
+    { _id: 'Massagem relaxante', total_intervencoes: 1250 },      
+    { _id: 'Preenchimento facial', total_intervencoes: 1226 },    
+    { _id: 'Tratamento facial com máscara', total_intervencoes: 1230 },
+    { _id: 'Tratamento de celulite', total_intervencoes: 1216 }   
+    ]
+
+5. db.consultas.aggregate([
+  {
+    $group: {
+      _id: { $year: { $dateFromString: { dateString: "$data" } } },
+      total_consultas: { $sum: 1 }
+    }
+  }
+]); 
+
+    [
+    { _id: 2016, total_consultas: 578 },
+    { _id: 2021, total_consultas: 621 },
+    { _id: 2017, total_consultas: 626 },
+    { _id: 2022, total_consultas: 578 },
+    { _id: 2018, total_consultas: 562 },
+    { _id: 2019, total_consultas: 590 },
+    { _id: 2020, total_consultas: 590 },
+    { _id: 2023, total_consultas: 292 },
+    { _id: 2015, total_consultas: 563 }
+    ]
+
 
