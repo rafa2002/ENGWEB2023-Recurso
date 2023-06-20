@@ -16,6 +16,4 @@ var consultaSchema = new mongoose.Schema({
     "_id": Number,
 });
 
-module.exports = {
-    consulta: new mongoose.model('consulta', consultaSchema),
-};
+module.exports = mongoose.model('consulta', consultaSchema);

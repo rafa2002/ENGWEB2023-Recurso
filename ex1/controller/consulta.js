@@ -60,26 +60,32 @@ module.exports.getNomes = () => {
 
 // GET /consultas/especies: devolve a lista das espécies vegetais ordenada alfabeticamente e sem repetições;
 module.exports.getInterv = () => {
-    return Consulta.distinct('operacoes')
-            .sorted('codigo nome operacao')
-            .then(resposta => {
-                return resposta
-            })
-            .catch(erro => {
-                return erro
-            })
-}
+    return Consulta.aggregate([
+      { $unwind: "$operacoes" },
+      { $group: { _id: "$operacoes.codigo", operacoes: { $first: "$operacoes" } } },
+      { $sort: { _id: 1 } },
+      { $project: { _id: 0, operacoes: { $objectToArray: "$operacoes" } } },
+      { $project: { operacoes: { $arrayToObject: "$operacoes" } } }
+    ])
+      .then(dados => {
+        const tuples = dados.map(item => Object.values(item.operacoes));
+        return tuples;
+      })
+      .catch(erro => {
+        return erro;
+      });
+  };
 
 
-// POST /consultas: acrescenta um registo novo à BD;
-module.exports.addConsulta = p => {
-    return Consulta.create(p)
-            .then(resposta => {
-                return resposta
-            })
-            .catch(erro => {
-                return erro
-            })
+  module.exports.addConsulta = (consulta) => {
+    return Consulta.collection.insertOne(consulta)
+                .then(dados=>{
+                    return dados
+                }
+                )
+                .catch(erro=>{
+                   return erro
+                })
 }
 
 // DELETE /consultas/:id: elimina da BD o registo com o identificador id.
