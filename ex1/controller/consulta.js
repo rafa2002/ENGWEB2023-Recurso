@@ -1,11 +1,8 @@
 var Consulta = require('../models/consulta')
-var Intervencao = require('../models/operacao')
 
 // GET /consultas: devolve uma lista com todos os registos;
 module.exports.list = () => {
-    return Consulta
-            .find()
-            .sort({Freguesia: -1})
+    return Consulta.find()
             .then(resposta => {
                 return resposta
             })
@@ -63,8 +60,8 @@ module.exports.getNomes = () => {
 
 // GET /consultas/especies: devolve a lista das espécies vegetais ordenada alfabeticamente e sem repetições;
 module.exports.getInterv = () => {
-    return Intervencao.distinct('codigo nome descricao ')
-            .sort()
+    return Consulta.distinct('operacoes')
+            .sorted('codigo nome operacao')
             .then(resposta => {
                 return resposta
             })
