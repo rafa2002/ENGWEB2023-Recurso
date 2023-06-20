@@ -77,8 +77,8 @@ module.exports.getInterv = () => {
   };
 
 
-  module.exports.addConsulta = (consulta) => {
-    return Consulta.collection.insertOne(consulta)
+module.exports.addConsulta = (consulta) => {
+    return Consultas.collection.insertOne(consulta)
                 .then(dados=>{
                     return dados
                 }
@@ -86,7 +86,7 @@ module.exports.getInterv = () => {
                 .catch(erro=>{
                    return erro
                 })
-}
+  }
 
 // DELETE /consultas/:id: elimina da BD o registo com o identificador id.
 module.exports.deleteConsulta = id => {
